@@ -1,9 +1,9 @@
 -- Provide a query that shows the total sales per country.
 
 SELECT
-    BillingCountry,
-    "$" || ROUND(TOTAL(Total), 2) AS TotalSales
+    i.BillingCountry,
+    "$" || printf("%.2f", SUM(i.Total)) AS TotalSales
 FROM
-    Invoice
+    Invoice i
 GROUP BY
-    BillingCountry
+    i.BillingCountry;
