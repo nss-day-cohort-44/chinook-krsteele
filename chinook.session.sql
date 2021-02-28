@@ -1,2 +1,81 @@
 SELECT * FROM Employee
 WHERE Title = "Sales Support Agent";
+
+-- All my attempts from top_2013_track
+-- SELECT
+--     Name TopTrack
+-- FROM
+--     Track
+-- WHERE TrackId IN (
+--     SELECT MAX(COUNT(TrackId))
+--     FROM InvoiceLine
+--     WHERE (
+--         SELECT 
+--             strftime ('%Y', i.InvoiceDate) AS Year,
+--             l.InvoiceLineId
+--         FROM
+--             Invoice i,
+--             InvoiceLine l
+--         WHERE
+--             i.InvoiceId = l.InvoiceId
+--             AND Year = '2013'
+--     )
+--     GROUP BY TrackId
+-- );
+
+--     (
+--         SELECT
+            
+--             strftime ('%Y', i.InvoiceDate) AS Year
+--         FROM
+--             InvoiceLine l,
+--             Invoice i
+--         WHERE
+--             i.InvoiceId = l.InvoiceId
+--             AND Year = '2013'
+--     )
+
+-- SELECT
+--     TopTrack2013,
+--     TrackCount
+-- FROM
+--     InvoiceLine l,
+--     Track t
+--     (
+--         SELECT
+--             t.name TopTrack2013,
+--             MAX(COUNT(l.TrackId)) TrackCount
+--         FROM
+--             Track t,
+--             InvoiceLine l
+--         WHERE
+--             t.TrackId = l.TrackId
+--         GROUP BY
+--             Track.TrackId
+--     );
+
+-- SELECT COUNT(*)
+-- FROM InvoiceLine
+-- GROUP BY TrackId;
+
+-- SELECT
+--     MAX(Total),
+--     EmployeeName
+-- FROM
+--     (
+--         SELECT
+--             "$" || printf("%.2f", SUM(i.Total)) AS TotalSales,
+--             e.FirstName || ' ' || e.LastName AS EmployeeName,
+--             strftime ('%Y', i.InvoiceDate) AS InvoiceYear
+--         FROM
+--             Invoice i,
+--             Employee e,
+--             Customer c
+--         WHERE
+--             i.CustomerId = c.CustomerId
+--             AND c.SupportRepId = e.EmployeeId
+--             AND InvoiceYear = '2009'
+--         GROUP BY
+--             EmployeeName,
+--             InvoiceYear
+--     ) AS Sales
