@@ -1,9 +1,6 @@
--- Provide a query that shows the most 
--- purchased track of 2013.
-
 SELECT
     TopTrack2013,
-    MAX(CountedTracks) AS TotalPurchases
+    CountedTracks AS TotalPurchases
 FROM (
         SELECT 
             t.Name TopTrack2013,
@@ -16,11 +13,8 @@ FROM (
             JOIN Invoice i
                 ON i.InvoiceId = l.InvoiceId
         WHERE
-            InvoiceYear = '2013'
+            InvoiceYear = '2011'
         GROUP BY
-            t.Name);
-                
-
-
-
-
+            t.Name)
+        ORDER BY
+            TotalPurchases DESC;
