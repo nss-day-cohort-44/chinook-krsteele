@@ -18,7 +18,7 @@ FROM (
         WHERE
             InvoiceYear = '2013'
         GROUP BY
-            l.TrackId);
+            t.Name);
                 
 
 
