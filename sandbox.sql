@@ -1,20 +1,17 @@
-SELECT
-    TopTrack2013,
-    CountedTracks AS TotalPurchases
-FROM (
-        SELECT 
-            t.Name TopTrack2013,
-            COUNT(l.trackId) CountedTracks,
-            strftime ('%Y', i.InvoiceDate) AS InvoiceYear
-        FROM
-            Track t
-            JOIN InvoiceLine l
-                ON t.TrackId = l.InvoiceLineId
-            JOIN Invoice i
-                ON i.InvoiceId = l.InvoiceId
-        WHERE
-            InvoiceYear = '2011'
-        GROUP BY
-            t.Name)
-        ORDER BY
-            TotalPurchases DESC;
+with TopTracks as (
+    select t.Name,
+        count(t.Name) PurchaseCount
+    from Track t
+        join InvoiceLine l on l.TrackId = t.TrackId
+        join Invoice i on l.InvoiceId = i.InvoiceId
+    where strftime('%Y', i.InvoiceDate) = "2013"
+    group by t.Name
+    order by PurchaseCount desc
+)
+select Name,
+    PurchaseCount
+from TopTracks
+where (
+        select max(PurchaseCount)
+        from TopTracks
+    ) = PurchaseCount;
